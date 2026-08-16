@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#02070b" />
+  <meta name="description" content="The Hunt: Nothing to See Here, a five-minute Huntress-inspired cybersecurity learning game prototype." />
+  <title>Play · The Hunt: Nothing to See Here</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="repo-back" href="index.html" aria-label="Back to The Hunt repository">← BACK TO REPOSITORY</a>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup" aria-label="Huntress learning game prototype">
+        <div class="brand-mark" aria-hidden="true"><span>H</span></div>
+        <div>
+          <div class="brand-name">HUNTRESS</div>
+          <div class="prototype-label">LEARNING GAME PROTOTYPE</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="soundBtn" class="icon-btn" type="button" aria-pressed="true"><span aria-hidden="true">◖))</span> SOUND: ON</button>
+        <button id="restartBtn" class="ghost-btn hidden" type="button"><span aria-hidden="true">◎</span> NEW TARGET</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="startScreen" class="screen start-screen active" aria-labelledby="gameTitle">
+        <div class="start-copy">
+          <p class="eyebrow">YOU'RE THE HACKER.</p>
+          <h1 id="gameTitle"><span>THE HUNT</span><small>NOTHING TO SEE HERE</small></h1>
+          <p class="tagline">Find the weaknesses. Exploit them. <strong>Don’t let Huntress catch you.</strong></p>
+          <p class="intro">Every move leaves evidence. Race through five attack stages while Huntress connects the traces behind you. Then turn the attack around and identify the defense that could have stopped you earliest.</p>
+          <div class="start-meta" aria-label="Game summary">
+            <span>5 attack stages</span><span>6 randomized missions</span><span>5-minute maximum</span>
+          </div>
+          <button id="startBtn" class="primary-btn start-btn" type="button">START THE HUNT <span aria-hidden="true">→</span></button>
+          <p class="microcopy">Fictionalized training simulation. No real-world intrusion instructions, commands, or exploit procedures are provided.</p>
+        </div>
+        <div class="start-art" role="img" aria-label="Anonymous hooded hacker in profile at a workstation, face fully obscured, outlined in glowing cyan">
+          <div class="art-grid" aria-hidden="true"></div>
+          <div class="huntress-whisper"><span class="pulse-dot" aria-hidden="true"></span> HUNTRESS IS WATCHING</div>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="screen game-screen" aria-live="polite">
+        <div class="mission-strip">
+          <div class="mission-card target-card">
+            <span class="label">TARGET</span>
+            <strong id="targetName">---</strong>
+            <span id="targetDetails" class="mission-detail">---</span>
+            <span id="missionBadge" class="mission-badge">MISSION</span>
+          </div>
+          <div class="mission-card mission-objective">
+            <span class="label">YOUR JOB</span>
+            <strong id="missionObjective">---</strong>
+            <span class="mission-detail">Reach Stage 5 before Huntress connects your trail.</span>
+          </div>
+          <div class="mission-card timer-wrap" aria-label="Time remaining">
+            <span class="label">TIME REMAINING</span>
+            <strong id="timer">05:00</strong>
+          </div>
+        </div>
+
+        <div class="stage-row" aria-label="Attack progression">
+          <span class="stage-title">ATTACK PROGRESSION</span>
+          <div id="stageTrack" class="stage-track"></div>
+        </div>
+
+        <div class="game-grid">
+          <section class="scene-card">
+            <div class="scene-art" role="img" aria-label="Anonymous hooded hacker in profile at computer screens, with all facial details obscured"></div>
+            <div class="scene-scan" aria-hidden="true"></div>
+            <div class="scene-overlay">
+              <span class="scene-kicker" id="stageLabel">STAGE 1 OF 5</span>
+              <h2 id="stageName">Initial Access</h2>
+              <p id="stagePrompt">Choose your next move.</p>
+            </div>
+          </section>
+
+          <aside class="huntress-panel" aria-label="Huntress detection status">
+            <div class="panel-header">
+              <span class="label">HUNTRESS DETECTION</span>
+              <span id="detectionWord" class="status-word">QUIET</span>
+            </div>
+            <div id="detectionSteps" class="detection-steps" aria-hidden="true">
+              <span class="on"></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="detection-labels" aria-hidden="true"><span>QUIET</span><span>WATCHING</span><span>CORRELATING</span><span>HUNTING</span><span>CAUGHT</span></div>
+            <div class="meter sr-only" aria-label="Detection level"><div id="detectionFill" class="meter-fill"></div></div>
+            <p id="huntressMessage" class="huntress-message">No active threat hunter assigned.</p>
+            <div class="radar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="trace-count"><strong id="traceCount">0</strong><span>traces connected</span></div>
+          </aside>
+
+          <section class="choice-panel">
+            <div class="choice-heading">
+              <div>
+                <span class="label">CHOOSE YOUR NEXT MOVE</span>
+                <h3>Every option trades speed for visibility.</h3>
+              </div>
+              <span id="stageHint" class="hint-chip">CHOOSE WISELY <b aria-hidden="true">i</b></span>
+            </div>
+            <div id="blockFeedback" class="block-feedback hidden" role="status" aria-live="assertive"></div>
+            <div id="choices" class="choice-grid"></div>
+          </section>
+
+          <section class="trace-panel">
+            <div class="panel-header"><span class="label">TRACES YOU'VE LEFT</span><span class="fingerprint" aria-hidden="true">◉</span></div>
+            <p class="trace-sub">Huntress sees the pieces.</p>
+            <div id="traceTimeline" class="trace-timeline"></div>
+            <div class="dot-map" aria-hidden="true"></div>
+          </section>
+        </div>
+
+        <section class="progress-snapshot" aria-label="Progress snapshot">
+          <div><span class="snapshot-label">STAGE</span><strong id="snapStage">1 / 5</strong></div>
+          <div><span class="snapshot-label">TRACES</span><strong id="snapTraces">0</strong></div>
+          <div><span class="snapshot-label">TIME</span><strong id="snapTime">05:00</strong></div>
+          <div><span class="snapshot-label">HUNTRESS</span><strong id="snapHuntress">QUIET</strong></div>
+          <div class="snapshot-progress"><span id="snapshotFill"></span></div>
+        </section>
+
+        <section class="tip-ribbon" aria-label="Gameplay tips">
+          <div class="pro-tip"><span class="tip-icon" aria-hidden="true">☼</span><div><strong>HUNTRESS PRO TIP</strong><span>Move fast, but don’t get sloppy. Huntress connects the dots.</span></div></div>
+          <div><span class="tip-icon" aria-hidden="true">◉</span><span>More traces mean more attention.</span></div>
+          <div><span class="tip-icon" aria-hidden="true">⬡</span><span>Strong defenses can block your path.</span></div>
+          <div><span class="tip-icon" aria-hidden="true">⌘</span><span>Huntress correlates activity across systems.</span></div>
+          <div><span class="tip-icon" aria-hidden="true">◎</span><span>Reach Stage 5 to complete your objective.</span></div>
+        </section>
+      </section>
+
+      <section id="consequenceScreen" class="screen consequence-screen" aria-live="assertive">
+        <div class="result-card">
+          <p class="eyebrow" id="resultEyebrow">RUN COMPLETE</p>
+          <h2 id="resultTitle">---</h2>
+          <p id="resultBody" class="result-body">---</p>
+          <div class="result-stats">
+            <div><span>REACHED</span><strong id="resultStage">Stage 0</strong></div>
+            <div><span>DETECTION</span><strong id="resultDetection">0%</strong></div>
+            <div><span>TIME USED</span><strong id="resultTime">00:00</strong></div>
+          </div>
+          <button id="forensicsBtn" class="primary-btn" type="button">REVIEW THE ATTACK <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section id="forensicsScreen" class="screen forensics-screen">
+        <div class="forensics-head">
+          <p class="eyebrow">HUNTRESS FORENSICS</p>
+          <h2>Your attack left a story.</h2>
+          <p>Choose the defensive control that would have interrupted your chain <strong>earliest</strong>.</p>
+        </div>
+        <div class="forensics-grid">
+          <div class="attack-recap">
+            <span class="label">YOUR ATTACK CHAIN</span>
+            <div id="recapChain" class="recap-chain"></div>
+            <div id="earliestBreak" class="earliest-break"></div>
+          </div>
+          <div class="defense-check">
+            <span class="label">DEFENSE CHECK</span>
+            <div id="defenseChoices" class="defense-grid"></div>
+            <div id="defenseFeedback" class="defense-feedback" role="status"></div>
+          </div>
+        </div>
+        <div class="final-actions">
+          <button id="anotherBtn" class="primary-btn hidden" type="button">HACK ANOTHER TARGET <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>THE HUNT: NOTHING TO SEE HERE · V4</span><span>RESPONSIVE BROWSER PROTOTYPE</span></footer>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
